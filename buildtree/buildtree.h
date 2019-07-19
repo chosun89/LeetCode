@@ -1,16 +1,31 @@
-#ifndef BUILD_TREE_H
-#define BUILD_TREE_H
+#ifndef BUILDTREE_H
+#define BUILDTREE_H
 
-#include "stringsplit.h"
 #include <queue>
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <vector>
+using namespace std;
 
 struct TreeNode {
     int val;
     TreeNode *left;
     TreeNode *right;
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-
 };
+
+vector<string> split(string str, char delimiter) {
+    istringstream iss(str);
+    string token;
+    vector<string> res;
+
+    while (getline(iss, token, delimiter)) {
+        res.push_back(token);
+    }
+
+    return res;
+}
 
 // builds a binary tree
 // returns root*
@@ -46,13 +61,28 @@ TreeNode* buildTree(string str) {
     return root;
 }
 
-void dfs(TreeNode* root) {
+void pre_dfs(TreeNode* root) {
     if (!root) return;
 
     cout << root->val << endl;
-    dfs(root->left);
-    dfs(root->right);
+    pre_dfs(root->left);
+    pre_dfs(root->right);
+}
 
+void post_dfs(TreeNode* root) {
+    if (!root) return;
+
+    post_dfs(root->left);
+    post_dfs(root->right);
+    cout << root->val << endl;
+}
+
+void in_dfs(TreeNode* root) {
+    if (!root) return;
+
+    in_dfs(root->left);
+    cout << root->val << endl;
+    in_dfs(root->right);
 }
 
 #endif
