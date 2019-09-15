@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+#define FOR(i,a,b) for(int i=(a);i<(b);i++)
+#define pb push_back
+using namespace std;
+#include <bits/stdc++.h>
+#define FOR(i,a,b) for(int i=(a);i<(b);i++)
+#define pb push_back
+using namespace std;
+
+class Solution {
+public:
+    int numPairsDivisibleBy60(vector<int>& time) {
+      // value -> count
+      int n = time.size();
+      unordered_map<int, int> mp;
+
+      for (int i = 0; i < n; i++) {
+        mp[ time[i] % 60 ]++;
+      }
+
+      int res = 0;
+      for (int i = 0; i < 30 ; i++) {
+        res += max(mp[i], mp[60 - i]);
+      }
+      return (res + mp[30]/2);
+    }
+};
+
+int main() {
+  Solution s;
+  vector<int> time = {60,60,60};
+  cout << s.numPairsDivisibleBy60(time) << endl;
+
+}
+
