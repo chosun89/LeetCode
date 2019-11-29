@@ -6,6 +6,17 @@ int gcd(int a, int b) {
   return (a%b) ? gcd(b, a%b) : b;
 }
 
+int inverse(int a, int m) {
+  int u = 0, v = 1;
+  while (a != 0) {
+    T t = m / a;
+    m -= t * a; swap(a, m);
+    u -= t * v; swap(u, v);
+  }
+  assert(m == 1);
+  return u;
+}
+
 pair<int,int> extendedEA(int a, int b) {
   int s = 1, s2 = 0, t = 0, t2 = 1;
   while(b > 0) {
@@ -36,4 +47,3 @@ int main() {
   cout << res.first << " " << res.second << endl;
 
 }
-
