@@ -3,8 +3,8 @@ using namespace std;
 
 class Solution {
 public:
-    map<TreeNode *, int> depth;
-    map<TreeNode *, TreeNode *> parent;
+    map<TreeNode*, int> depth;
+    map<TreeNode*, TreeNode *> parent;
 
     void dfs(TreeNode *node, TreeNode *par) {
         if (node == nullptr)
@@ -16,7 +16,7 @@ public:
         dfs(node->right, node);
     }
 
-    TreeNode *lca(TreeNode *a, TreeNode *b) {
+    TreeNode* lca(TreeNode* a, TreeNode* b) {
         while (a != b) {
             if (depth[a] < depth[b])
                 swap(a, b);
@@ -28,6 +28,5 @@ public:
     }
 
 int main() {
-
 }
 
