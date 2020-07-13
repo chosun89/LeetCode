@@ -8,9 +8,15 @@ public:
 	// limit: length of result
   int limit;
 
-	// idx: index of digit in a word, widx: index of a word in word list, sum: summation of all word[idx]  
-  bool helper(vector<string>& words, string& result, int idx, int widx, int sum) {
-    // base case 1: if index is one past the end of result, return true if there is no carry
+  bool helper(const vector<string>& words, const string& result, int idx, int widx, int sum) {
+	/* 
+    args: 
+    idx : index/column of digit in a word, 
+    widx: index of a word in word list, 
+    sum : column wise sum of all words[idx]  
+  */
+    /* base case 1: if column iterator 'idx' is past the last index of result,
+       return true if there is no carry */
     if (idx == limit) {
       return sum == 0;
     }
@@ -26,15 +32,15 @@ public:
         // since result[idx] has not been assigned an int, assign to it sum%10
         c2i[result[idx]] = sum%10;
         i2c[sum%10] = result[idx];
-        // recurse from top
+        // recurse from top on the next column
         bool tmp = helper(words, result, idx+1, 0, sum/10);
         c2i.erase(result[idx]);
         i2c.erase(sum%10);
         return tmp;
       } 
+      // else if valid (result[idx] has been assigned and matches sum%10), recurse from top
       else if (c2i.count(result[idx]) && c2i[result[idx]] == sum%10) 
       {
-        // if valid (result[idx] has been assigned and matches sum%10), recurse from top
         return helper(words, result, idx+1, 0, sum/10);
       } 
       else 
@@ -45,7 +51,7 @@ public:
 
     // if word[widx] length less than digit, ignore and go to next word
     if (idx >= words[widx].length()) {
-      return helper(words, result, idx, widx+1, sum);
+      return helper(words, result, idx, widx + 1, sum);
     }
 
     // if word[widx][idx] already mapped to a value
@@ -53,7 +59,7 @@ public:
       // if the current character is an MSD and maps to 0, reject (no leading zeros)
       if (idx == words[widx].length()-1 && words[widx].length() > 1 && c2i[words[widx][idx]] == 0)
         return false;
-      return helper(words, result, idx, widx+1, sum+c2i[words[widx][idx]]);
+      return helper(words, result, idx, widx + 1, sum + c2i[words[widx][idx]]);
     }
 
     // if word[widx][idx] not mapped to a value yet
@@ -71,6 +77,7 @@ public:
       i2c.erase(i);
       if (tmp) return true;
     }
+
     return false;
   }
 
@@ -80,8 +87,10 @@ public:
         if (w.length() > limit) 
           return false;
 
+      // reverse all input words 
       for (auto& w : words) 
         reverse(w.begin(), w.end());
+      // reverse result
       reverse(result.begin(), result.end());
 
       return helper(words, result, 0, 0, 0);
